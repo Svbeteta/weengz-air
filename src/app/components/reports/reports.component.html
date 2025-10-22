@@ -1,0 +1,61 @@
+﻿<h3 class="mb-3">Reportes</h3>
+<div class="card shadow-sm" *ngIf="resumen; else loading">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="p-3 border rounded">
+          <div class="fw-bold">Usuarios creados</div>
+          <div class="display-6">{{resumen?.usuariosCreados}}</div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="p-3 border rounded">
+          <div class="fw-bold mb-2">Reservas por usuario</div>
+          <ul class="mb-0">
+            <li *ngFor="let k of (resumen?.reservasPorUsuario | keyvalue)">
+              {{k.key}}: {{k.value}}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="p-3 border rounded">
+          <div class="fw-bold">Asientos ocupados por clase</div>
+          <div>Negocios: {{resumen?.ocupadosPorClase?.Negocios}}</div>
+          <div>Económica: {{resumen?.ocupadosPorClase?.Economica}}</div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-3 border rounded">
+          <div class="fw-bold">Asientos libres por clase</div>
+          <div>Negocios: {{resumen?.libresPorClase?.Negocios}}</div>
+          <div>Económica: {{resumen?.libresPorClase?.Economica}}</div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-3 border rounded">
+          <div class="fw-bold">Selección</div>
+          <div>Manual: {{resumen?.seleccionManual}}</div>
+          <div>Aleatorio: {{resumen?.seleccionAleatorio}}</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-3 border rounded">
+          <div class="fw-bold">Reservas modificadas</div>
+          <div>{{resumen?.modificados}}</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-3 border rounded">
+          <div class="fw-bold">Reservas canceladas</div>
+          <div>{{resumen?.cancelados}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #loading>
+  <div class="alert alert-secondary">Cargando reportes...</div>
+</ng-template>

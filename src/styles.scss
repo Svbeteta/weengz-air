@@ -1,0 +1,29 @@
+﻿@import "bootstrap/dist/css/bootstrap.min.css";
+@import "ngx-toastr/toastr";
+/* Tailwind (sin preflight para evitar conflictos con Bootstrap) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos globales adicionales */
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
+.app-brand {
+  @apply text-primary font-bold;
+}
+.seat {
+  @apply w-10 h-10 flex items-center justify-center rounded border text-sm cursor-pointer select-none;
+}
+.seat.free {
+  @apply bg-green-100 border-green-400 text-green-800 hover:bg-green-200;
+}
+.seat.busy {
+  @apply bg-red-100 border-red-400 text-red-800 line-through cursor-not-allowed;
+}
+.seat.selected {
+  @apply bg-blue-100 border-blue-500 text-blue-800 ring-2 ring-blue-300;
+}

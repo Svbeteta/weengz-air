@@ -1,0 +1,534 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "email": "juan.perez@gmail.com",
+      "esVip": false,
+      "nombreCompleto": "Juan Alberto Pérez",
+      "fechaCreacion": "2025-10-20T10:00:30.000Z",
+      "reservasCount": 1
+    },
+    {
+      "id": 2,
+      "email": "ana.gomez@outlook.com",
+      "esVip": true,
+      "nombreCompleto": "Ana María Gómez",
+      "fechaCreacion": "2025-10-21T11:00:00.000Z",
+      "reservasCount": 2
+    }
+  ],
+  "asientos": [
+    {
+      "id": "I1",
+      "numero": "I1",
+      "clase": "Negocios",
+      "estado": "Ocupado"
+    },
+    {
+      "id": "I2",
+      "numero": "I2",
+      "clase": "Negocios",
+      "estado": "Libre"
+    },
+    {
+      "id": "G1",
+      "numero": "G1",
+      "clase": "Negocios",
+      "estado": "Ocupado"
+    },
+    {
+      "id": "G2",
+      "numero": "G2",
+      "clase": "Negocios",
+      "estado": "Libre"
+    },
+    {
+      "id": "F1",
+      "numero": "F1",
+      "clase": "Negocios",
+      "estado": "Ocupado"
+    },
+    {
+      "id": "F2",
+      "numero": "F2",
+      "clase": "Negocios",
+      "estado": "Libre"
+    },
+    {
+      "id": "D1",
+      "numero": "D1",
+      "clase": "Negocios",
+      "estado": "Libre"
+    },
+    {
+      "id": "D2",
+      "numero": "D2",
+      "clase": "Negocios",
+      "estado": "Libre"
+    },
+    {
+      "id": "C1",
+      "numero": "C1",
+      "clase": "Negocios",
+      "estado": "Libre"
+    },
+    {
+      "id": "C2",
+      "numero": "C2",
+      "clase": "Negocios",
+      "estado": "Libre"
+    },
+    {
+      "id": "A1",
+      "numero": "A1",
+      "clase": "Negocios",
+      "estado": "Ocupado"
+    },
+    {
+      "id": "A2",
+      "numero": "A2",
+      "clase": "Negocios",
+      "estado": "Libre"
+    },
+    {
+      "id": "I3",
+      "numero": "I3",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "I4",
+      "numero": "I4",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "I5",
+      "numero": "I5",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "I6",
+      "numero": "I6",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "I7",
+      "numero": "I7",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "H3",
+      "numero": "H3",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "H4",
+      "numero": "H4",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "H5",
+      "numero": "H5",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "H6",
+      "numero": "H6",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "H7",
+      "numero": "H7",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "G3",
+      "numero": "G3",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "G4",
+      "numero": "G4",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "G5",
+      "numero": "G5",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "G6",
+      "numero": "G6",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "G7",
+      "numero": "G7",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "F3",
+      "numero": "F3",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "F4",
+      "numero": "F4",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "F5",
+      "numero": "F5",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "F6",
+      "numero": "F6",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "F7",
+      "numero": "F7",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "E3",
+      "numero": "E3",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "E4",
+      "numero": "E4",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "E5",
+      "numero": "E5",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "E6",
+      "numero": "E6",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "E7",
+      "numero": "E7",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "D3",
+      "numero": "D3",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "D4",
+      "numero": "D4",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "D5",
+      "numero": "D5",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "D6",
+      "numero": "D6",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "D7",
+      "numero": "D7",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "C3",
+      "numero": "C3",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "C4",
+      "numero": "C4",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "C5",
+      "numero": "C5",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "C6",
+      "numero": "C6",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "C7",
+      "numero": "C7",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "B3",
+      "numero": "B3",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "B4",
+      "numero": "B4",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "B5",
+      "numero": "B5",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "B6",
+      "numero": "B6",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "B7",
+      "numero": "B7",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "A3",
+      "numero": "A3",
+      "clase": "Economica",
+      "estado": "Ocupado"
+    },
+    {
+      "id": "A4",
+      "numero": "A4",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "A5",
+      "numero": "A5",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "A6",
+      "numero": "A6",
+      "clase": "Economica",
+      "estado": "Libre"
+    },
+    {
+      "id": "A7",
+      "numero": "A7",
+      "clase": "Economica",
+      "estado": "Libre"
+    }
+  ],
+  "reservaciones": [
+    {
+      "id": 1,
+      "estado": "ACTIVA",
+      "usuario": "juan.perez@gmail.com",
+      "asiento": "A1",
+      "pasajero": {
+        "cui": "2548985620101",
+        "nombreCompleto": "Juan Alberto Pérez",
+        "tieneEquipaje": true
+      },
+      "detalles": {
+        "metodoSeleccion": "Manual",
+        "precioTotal": 550,
+        "precioBase": 550,
+        "fechaReservacion": "2025-10-22T15:10:45.000Z"
+      },
+      "Modificaciones": []
+    },
+    {
+      "id": 2,
+      "estado": "ACTIVA",
+      "usuario": "ana.gomez@outlook.com",
+      "asiento": "A3",
+      "pasajero": {
+        "cui": "1985455890201",
+        "nombreCompleto": "Ricardo José Paredes",
+        "tieneEquipaje": false
+      },
+      "detalles": {
+        "metodoSeleccion": "Aleatorio",
+        "precioTotal": 275,
+        "precioBase": 250,
+        "fechaReservacion": "2025-10-23T09:00:12.000Z"
+      },
+      "Modificaciones": [
+        {
+          "descripcion": "Cambio de asiento de A6 a A3.",
+          "recargo": 25,
+          "fecha": "2025-10-24T11:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "estado": "CANCELADA",
+      "usuario": "ana.gomez@outlook.com",
+      "asiento": "A4",
+      "pasajero": {
+        "cui": "3012789450301",
+        "nombreCompleto": "Luisa Fernanda Ríos",
+        "tieneEquipaje": true
+      },
+      "detalles": {
+        "metodoSeleccion": "Manual",
+        "precioTotal": 225,
+        "precioBase": 250,
+        "fechaReservacion": "2025-10-25T18:30:00.000Z"
+      },
+      "Modificaciones": []
+    },
+    {
+      "id": "fee4",
+      "estado": "ACTIVA",
+      "usuario": "ana.gomez@outlook.com",
+      "asiento": "I1",
+      "pasajero": {
+        "nombreCompleto": "Sofía Méndez",
+        "cui": "1987654320101",
+        "tieneEquipaje": true
+      },
+      "detalles": {
+        "fechaReservacion": "2025-10-22T06:21:53.759Z",
+        "metodoSeleccion": "Manual",
+        "precioBase": 550,
+        "precioTotal": 495
+      },
+      "Modificaciones": []
+    },
+    {
+      "id": "18be",
+      "estado": "ACTIVA",
+      "usuario": "ana.gomez@outlook.com",
+      "asiento": "F1",
+      "pasajero": {
+        "nombreCompleto": "Carlos Andrés Ramírez ",
+        "cui": "2098745630201",
+        "tieneEquipaje": false
+      },
+      "detalles": {
+        "fechaReservacion": "2025-10-22T06:21:53.759Z",
+        "metodoSeleccion": "Manual",
+        "precioBase": 550,
+        "precioTotal": 495
+      },
+      "Modificaciones": []
+    },
+    {
+      "id": "1f2a",
+      "estado": "ACTIVA",
+      "usuario": "ana.gomez@outlook.com",
+      "asiento": "G1",
+      "pasajero": {
+        "nombreCompleto": "María Fernanda López",
+        "cui": "1754896520101",
+        "tieneEquipaje": false
+      },
+      "detalles": {
+        "fechaReservacion": "2025-10-22T06:21:53.759Z",
+        "metodoSeleccion": "Manual",
+        "precioBase": 550,
+        "precioTotal": 495
+      },
+      "Modificaciones": []
+    },
+    {
+      "id": "6ab4",
+      "estado": "ACTIVA",
+      "usuario": "ana.gomez@outlook.com",
+      "asiento": "I1",
+      "pasajero": {
+        "nombreCompleto": "Sofía Méndez",
+        "cui": "1987654320101",
+        "tieneEquipaje": true
+      },
+      "detalles": {
+        "fechaReservacion": "2025-10-22T06:21:56.446Z",
+        "metodoSeleccion": "Manual",
+        "precioBase": 550,
+        "precioTotal": 495
+      },
+      "Modificaciones": []
+    },
+    {
+      "id": "b3e5",
+      "estado": "ACTIVA",
+      "usuario": "ana.gomez@outlook.com",
+      "asiento": "F1",
+      "pasajero": {
+        "nombreCompleto": "Carlos Andrés Ramírez ",
+        "cui": "2098745630201",
+        "tieneEquipaje": false
+      },
+      "detalles": {
+        "fechaReservacion": "2025-10-22T06:21:56.446Z",
+        "metodoSeleccion": "Manual",
+        "precioBase": 550,
+        "precioTotal": 495
+      },
+      "Modificaciones": []
+    },
+    {
+      "id": "af13",
+      "estado": "ACTIVA",
+      "usuario": "ana.gomez@outlook.com",
+      "asiento": "G1",
+      "pasajero": {
+        "nombreCompleto": "María Fernanda López",
+        "cui": "1754896520101",
+        "tieneEquipaje": false
+      },
+      "detalles": {
+        "fechaReservacion": "2025-10-22T06:21:56.446Z",
+        "metodoSeleccion": "Manual",
+        "precioBase": 550,
+        "precioTotal": 495
+      },
+      "Modificaciones": []
+    }
+  ]
+}

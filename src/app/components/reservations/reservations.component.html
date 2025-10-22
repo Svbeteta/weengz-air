@@ -1,0 +1,62 @@
+﻿<div class="row g-3">
+  <div class="col-12 col-lg-7">
+    <div class="card shadow-sm mb-3" *ngIf="lote; else noLote">
+      <div class="card-body">
+        <h5 class="mb-3">Datos del pasajero por asiento</h5>
+        <div class="alert alert-info" *ngIf="usuario?.esVip || (usuario?.reservasCount ?? 0) >= 5">
+          Programa VIP activo: 10% de descuento aplicado.
+        </div>
+        <div *ngFor="let num of lote?.asientos; let i = index" class="border rounded p-3 mb-2">
+          <div class="fw-bold mb-2">Asiento: {{num}}</div>
+          <div class="row g-2">
+            <div class="col-md-6">
+              <label class="form-label">Nombre completo</label>
+              <input class="form-control" [(ngModel)]="pasajeros[i].nombreCompleto">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">CUI</label>
+              <input class="form-control" [(ngModel)]="pasajeros[i].cui" maxlength="13">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="pasajeros[i].tieneEquipaje" id="eq{{i}}">
+                <label class="form-check-label" for="eq{{i}}">Equipaje</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-primary mt-2" (click)="confirmarLote()">Confirmar reservas</button>
+      </div>
+    </div>
+    <ng-template #noLote>
+      <div class="alert alert-secondary">No hay seleccion en curso. Vaya a "Reservar asientos".</div>
+    </ng-template>
+  </div>
+
+  <div class="col-12 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="mb-3">Mis Reservas</h5>
+        <div *ngFor="let r of misReservas" class="border rounded p-2 mb-2">
+          <div><strong>Asiento:</strong> {{r.asiento}} | <strong>Estado:</strong> {{r.estado}}</div>
+          <div><small>{{r.pasajero.nombreCompleto}} - CUI: {{r.pasajero.cui}} - Equipaje: {{r.pasajero.tieneEquipaje ? 'SÃ­':'No'}}</small></div>
+          <div><small>Método: {{r.detalles.metodoSeleccion}} | Fecha: {{r.detalles.fechaReservacion | date:'short'}}</small></div>
+          <div><small>Precio: Q{{r.detalles.precioTotal}}</small></div>
+          <div class="mt-2 d-flex gap-2">
+            <button class="btn btn-sm btn-outline-primary" (click)="modificar(r)" [disabled]="r.estado!=='ACTIVA'">Modificar</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="cancelar(r)" [disabled]="r.estado!=='ACTIVA'">Cancelar</button>
+          </div>
+          <div class="mt-2" *ngIf="r.Modificaciones?.length">
+            <small class="text-muted">Modificaciones:</small>
+            <ul class="mb-0">
+              <li *ngFor="let m of r.Modificaciones">
+                <small>{{m.fecha | date:'short'}} - Q{{m.recargo}} - {{m.descripcion}}</small>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div *ngIf="!misReservas?.length" class="text-muted">Sin reservas aún.</div>
+      </div>
+    </div>
+  </div>
+</div>
