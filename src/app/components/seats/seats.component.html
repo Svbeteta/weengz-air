@@ -39,7 +39,7 @@
         <div *ngIf="clase === 'Negocios'">
           <div class="mb-2" *ngFor="let r of businessRows">
             <div class="d-flex align-items-center gap-2 mb-1">
-              <div class="w-10 text-muted fw-bold" style="width:2rem">{{r}}</div>
+              <div class="row-label">{{r}}</div>
               <div class="d-flex gap-2">
                 <div
                   *ngFor="let a of seatsByRow(r, 'Negocios')"
@@ -58,7 +58,7 @@
         <div *ngIf="clase === 'Economica'">
           <div class="mb-2" *ngFor="let r of economyRows">
             <div class="d-flex align-items-center gap-2 mb-1">
-              <div class="w-10 text-muted fw-bold" style="width:2rem">{{r}}</div>
+              <div class="row-label">{{r}}</div>
               <div class="d-flex gap-2 flex-wrap">
                 <div
                   *ngFor="let a of seatsByRow(r, 'Economica')"

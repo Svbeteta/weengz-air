@@ -44,6 +44,23 @@ export class ApiService {
     return this.http.delete(`${this.base}/reservaciones/${id}`);
   }
 
+  // Nuevos endpoints atómicos del backend
+  crearReservacionAtomica(payload: any) {
+    return this.http.post<Reservacion>(`${this.base}/reservaciones/atomic`, payload);
+  }
+  cancelarReservacionAtomica(id: number, cui: string) {
+    return this.http.post(`${this.base}/reservaciones/${id}/cancelar`, { cui });
+  }
+  modificarReservacionAtomica(id: number, nuevoAsiento: string, descripcion?: string, cui?: string) {
+    return this.http.post<Reservacion>(`${this.base}/reservaciones/${id}/modificar`, { nuevoAsiento, descripcion, cui });
+  }
+  confirmarReservacion(id: number) {
+    return this.http.post<Reservacion>(`${this.base}/reservaciones/${id}/confirmar`, {});
+  }
+  confirmarReservacionesLote(ids: number[]) {
+    return this.http.post<{ok:boolean, updated:number}>(`${this.base}/reservaciones/confirmar-lote`, { ids });
+  }
+
   // Helpers
   getReservasPorUsuario(email: string): Observable<Reservacion[]> {
     return this.getReservaciones().pipe(map(rs => rs.filter(r => r.usuario === email)));

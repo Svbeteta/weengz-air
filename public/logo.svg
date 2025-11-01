@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-labelledby="title">
+  <title id="title">Weengz Air</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="160" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#66FCF1"/>
+      <stop offset="1" stop-color="#45A29E"/>
+    </linearGradient>
+  </defs>
+  <!-- Simple stylized W with wings to serve as a placeholder; replace this file with your final logo if desired -->
+  <g fill="url(#g)">
+    <path d="M18 10c-4 0-7 0-10-2-.7-.3-1 1-.4 1.4C10 11 13 12 16 12h8c3 0 6-1 8.4-2.6.6-.4.3-1.7-.4-1.4-3 1.2-6 2-10 2H18z"/>
+    <path d="M142 10c4 0 7 0 10-2 .7-.3 1 1 .4 1.4C150 11 147 12 144 12h-8c-3 0-6-1-8.4-2.6-.6-.4-.3-1.7.4-1.4 3 1.2 6 2 10 2h4z"/>
+    <path d="M57 10l-10 20c-.7 1.4-2.9 1.4-3.6 0L33 10h9l6 12 5.6-11.2c.6-1.2 2.6-1.2 3.2 0L62 22l6-12h9l-10 20c-.7 1.4-2.9 1.4-3.6 0L57 10z"/>
+  </g>
+</svg>

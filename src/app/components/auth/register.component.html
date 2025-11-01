@@ -4,17 +4,49 @@
     <form [formGroup]="form" (ngSubmit)="submit()" class="card card-body shadow-sm">
       <div class="mb-3">
         <label class="form-label">Nombre completo</label>
-        <input class="form-control" formControlName="nombreCompleto" placeholder="Nombre y apellido">
+        <input class="form-control" formControlName="nombreCompleto" placeholder="Nombre y apellido"
+               [class.is-invalid]="f.nombreCompleto.touched && f.nombreCompleto.invalid" autocomplete="name">
+        <div class="invalid-feedback" *ngIf="f.nombreCompleto.touched && f.nombreCompleto.errors">
+          <span *ngIf="f.nombreCompleto.errors['required']">El nombre es obligatorio.</span>
+          <span *ngIf="f.nombreCompleto.errors['minlength']">Debe tener al menos 3 caracteres.</span>
+        </div>
       </div>
+      
       <div class="mb-3">
         <label class="form-label">Email (gmail/outlook)</label>
-        <input class="form-control" formControlName="email" placeholder="usuario@gmail.com">
+        <input class="form-control" formControlName="email" placeholder="usuario@gmail.com"
+               [class.is-invalid]="f.email.touched && f.email.invalid" autocomplete="email">
+        <div class="invalid-feedback" *ngIf="f.email.touched && f.email.errors">
+          <span *ngIf="f.email.errors['required']">El email es obligatorio.</span>
+          <span *ngIf="f.email.errors['email']">Formato de email no válido.</span>
+          <span *ngIf="f.email.errors['domain']">Solo se permite @gmail.com o @outlook.com.</span>
+        </div>
       </div>
+
       <div class="mb-3">
-        <label class="form-label">ContraseÃ±a</label>
-        <input type="password" class="form-control" formControlName="password" placeholder="â€¢â€¢â€¢â€¢">
+        <label class="form-label">Contraseña</label>
+        <input type="password" class="form-control" formControlName="password" placeholder="••••"
+               [class.is-invalid]="f.password.touched && f.password.invalid" autocomplete="new-password">
+        <div class="invalid-feedback" *ngIf="f.password.touched && f.password.errors">
+          <span *ngIf="f.password.errors['required']">La contraseña es obligatoria.</span>
+          <span *ngIf="f.password.errors['minlength']">Debe tener al menos 4 caracteres.</span>
+        </div>
       </div>
-      <button class="btn btn-primary">Registrarme</button>
+
+      <button class="btn btn-primary" [disabled]="form.invalid">Registrarme</button>
+
+      <div *ngIf="submitted && form.invalid" class="alert alert-danger mt-3 mb-0 small">
+        <div class="fw-semibold">Por favor corrige:</div>
+        <ul class="mb-0 ps-3">
+          <li *ngIf="f.nombreCompleto.errors?.['required']">Nombre completo es requerido.</li>
+          <li *ngIf="f.nombreCompleto.errors?.['minlength']">Nombre debe tener al menos 3 caracteres.</li>
+          <li *ngIf="f.email.errors?.['required']">Email es requerido.</li>
+          <li *ngIf="f.email.errors?.['email']">Email no tiene formato válido.</li>
+          <li *ngIf="f.email.errors?.['domain']">Solo se permite gmail.com u outlook.com.</li>
+          <li *ngIf="f.password.errors?.['required']">Contraseña es requerida.</li>
+          <li *ngIf="f.password.errors?.['minlength']">Contraseña debe tener al menos 4 caracteres.</li>
+        </ul>
+      </div>
     </form>
   </div>
 </div>

@@ -1,0 +1,413 @@
+openapi: 3.0.3
+info:
+  title: Weengz Air API
+  version: 1.0.0
+  description: |
+    REST API for Weengz Air reservations, users, and seats.
+    
+    Notes
+    - Dates are ISO-8601 strings (UTC) unless specified otherwise.
+    - Currency amounts are in Quetzales (Q).
+servers:
+  - url: http://localhost:4000
+    description: Local development
+components:
+  schemas:
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+          format: email
+        nombreCompleto:
+          type: string
+        fechaCreacion:
+          type: string
+          format: date-time
+        esVip:
+          type: boolean
+        reservasCount:
+          type: integer
+      required: [email, nombreCompleto]
+    Asiento:
+      type: object
+      properties:
+        id:
+          type: string
+        numero:
+          type: string
+          example: A1
+        clase:
+          type: string
+          enum: [Negocios, Economica]
+        estado:
+          type: string
+          enum: [Libre, Ocupado]
+      required: [id, numero, clase, estado]
+    Pasajero:
+      type: object
+      properties:
+        nombreCompleto:
+          type: string
+        cui:
+          type: string
+          description: 13-digit CUI
+        tieneEquipaje:
+          type: boolean
+      required: [nombreCompleto, cui, tieneEquipaje]
+    DetallesReserva:
+      type: object
+      properties:
+        fechaReservacion:
+          type: string
+          format: date-time
+        metodoSeleccion:
+          type: string
+          enum: [Manual, Aleatorio]
+        precioBase:
+          type: number
+          format: float
+        precioTotal:
+          type: number
+          format: float
+      required: [fechaReservacion, metodoSeleccion]
+    Modificacion:
+      type: object
+      properties:
+        id:
+          type: integer
+        fecha:
+          type: string
+          format: date-time
+        recargo:
+          type: number
+        descripcion:
+          type: string
+        reservacionId:
+          type: integer
+    ReservacionDb:
+      type: object
+      description: Forma cruda del modelo en BD devuelta por la mayoría de endpoints de escritura
+      properties:
+        id:
+          type: integer
+        estado:
+          type: string
+          enum: [ACTIVA, CONFIRMADA, CANCELADA]
+        usuario:
+          type: string
+          description: Email del usuario
+        asiento:
+          type: string
+          description: Asiento ID (e.g., A1)
+        pasajeroNombre:
+          type: string
+        pasajeroCui:
+          type: string
+        pasajeroEquipaje:
+          type: boolean
+        fechaReservacion:
+          type: string
+          format: date-time
+        metodoSeleccion:
+          type: string
+          enum: [Manual, Aleatorio]
+        precioBase:
+          type: number
+        precioTotal:
+          type: number
+      required: [estado, usuario, asiento]
+    Reservacion:
+      type: object
+      description: Vista anidada utilizada por listados
+      properties:
+        id:
+          type: integer
+        estado:
+          type: string
+          enum: [ACTIVA, CONFIRMADA, CANCELADA]
+        usuario:
+          type: string
+          description: Email del usuario
+        asiento:
+          type: string
+          description: Asiento ID (e.g., A1)
+        pasajero:
+          $ref: '#/components/schemas/Pasajero'
+        detalles:
+          $ref: '#/components/schemas/DetallesReserva'
+        Modificaciones:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modificacion'
+      required: [estado, usuario, asiento]
+  parameters:
+    idParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+  /usuarios:
+    get:
+      summary: Listar usuarios
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+    post:
+      summary: Crear usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '201':
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+  /usuarios/{id}:
+    patch:
+      summary: Actualizar usuario
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+  /asientos:
+    get:
+      summary: Listar asientos
+      responses:
+        '200':
+          description: Lista de asientos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asiento'
+  /asientos/{id}:
+    patch:
+      summary: Actualizar asiento
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Asiento actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asiento'
+  /reservaciones:
+    get:
+      summary: Listar reservaciones
+      responses:
+        '200':
+          description: Lista de reservaciones (forma de lista)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservacion'
+    post:
+      summary: Crear reservación (no atómica)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reservacion'
+      responses:
+        '201':
+          description: Reservación creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservacionDb'
+  /reservaciones/{id}:
+    patch:
+      summary: Actualizar reservación
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Reservación actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservacionDb'
+    delete:
+      summary: Eliminar reservación
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        '204':
+          description: Eliminada
+  /reservaciones/atomic:
+    post:
+      summary: Crear reservación atómica (aplica descuento VIP y marca asiento Ocupado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuario: { type: string, format: email }
+                asiento: { type: string }
+                pasajero:
+                  $ref: '#/components/schemas/Pasajero'
+                detalles:
+                  type: object
+                  properties:
+                    fechaReservacion: { type: string, format: date-time }
+                    metodoSeleccion: { type: string, enum: [Manual, Aleatorio] }
+                    precioBase: { type: number }
+                  required: [fechaReservacion, metodoSeleccion, precioBase]
+              required: [usuario, asiento, pasajero, detalles]
+      responses:
+        '201':
+          description: Reservación creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservacionDb'
+  /reservaciones/{id}/modificar:
+    post:
+      summary: Modificar reservación (mismo tipo de cabina, +10% recargo) — requiere CUI
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nuevoAsiento: { type: string }
+                descripcion: { type: string }
+                cui: { type: string, description: CUI del pasajero (13 dígitos) }
+              required: [nuevoAsiento, cui]
+      responses:
+        '200':
+          description: Reservación modificada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservacionDb'
+        '400':
+          description: Error de validación (p.ej., CUI no coincide)
+  /reservaciones/{id}/cancelar:
+    post:
+      summary: Cancelar reservación — requiere CUI
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cui: { type: string, description: CUI del pasajero (13 dígitos) }
+              required: [cui]
+      responses:
+        '200':
+          description: Cancelada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+        '400':
+          description: Error de validación (p.ej., CUI no coincide)
+  /reservaciones/{id}/confirmar:
+    post:
+      summary: Confirmar reservación individual
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        '200':
+          description: Reservación confirmada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservacionDb'
+  /reservaciones/confirmar-lote:
+    post:
+      summary: Confirmar múltiples reservaciones y enviar un único correo consolidado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  items: { type: integer }
+              required: [ids]
+      responses:
+        '200':
+          description: Confirmaciones procesadas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  updated: { type: integer }

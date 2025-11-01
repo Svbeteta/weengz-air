@@ -8,7 +8,7 @@
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
         "api": "json-server --watch db.json --port 3000",
-        "dev": "concurrently -k -n ANGULAR,API -c blue,magenta \"ng serve --port 4200 --open\" \"npm run api\""
+        "dev": "concurrently -k -n ANGULAR,API -c blue,magenta \"ng serve --port 4200 --open\" \"npm --prefix server run dev\""
     },
     "prettier": {
         "printWidth": 100,
@@ -33,7 +33,7 @@
         "@angular/router": "^20.3.0",
         "@popperjs/core": "^2.11.8",
         "bootstrap": "^5.3.8",
-        "concurrently": "^9.2.1",
+    "concurrently": "^9.2.1",
         "dayjs": "^1.11.18",
         "json-server": "^1.0.0-beta.3",
         "ngx-toastr": "^19.1.0",

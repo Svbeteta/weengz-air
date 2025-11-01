@@ -1,5 +1,7 @@
-﻿<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom px-3">
-  <a class="navbar-brand fw-bold" routerLink="/seats">Weengz Air</a>
+﻿<nav class="navbar navbar-expand-lg app-navbar px-3">
+  <a class="navbar-brand d-flex align-items-center" routerLink="/seats" aria-label="Weengz Air">
+    <img ngSrc="/logo.png" width="112" height="28" alt="Weengz Air" class="brand-logo" fetchpriority="low" />
+  </a>
 
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"
           aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -8,25 +10,55 @@
 
   <div id="nav" class="collapse navbar-collapse">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-      <li class="nav-item"><a class="nav-link" routerLink="/seats" routerLinkActive="active">Asientos</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="/reservations" routerLinkActive="active">Reservas</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="/reports" routerLinkActive="active">Reportes</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="/xml" routerLinkActive="active">XML</a></li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/seats" routerLinkActive="active">
+          <i class="bi bi-grid me-1"></i> Asientos
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/reservations" routerLinkActive="active">
+          <i class="bi bi-card-checklist me-1"></i> Reservas
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/reports" routerLinkActive="active">
+          <i class="bi bi-graph-up me-1"></i> Reportes
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/xml" routerLinkActive="active">
+          <i class="bi bi-code-slash me-1"></i> XML
+        </a>
+      </li>
     </ul>
 
-    <div class="d-flex gap-2">
+    <div class="d-flex align-items-center gap-3">
       <ng-container *ngIf="auth.currentUser; else authLinks">
-        <span class="text-secondary">Hola, {{auth.currentUser.nombreCompleto}} ({{auth.currentUser.email}})</span>
-        <button class="btn btn-outline-danger btn-sm" (click)="logout()">Salir</button>
+        <span class="text-secondary">
+          <i class="bi bi-person-circle me-1"></i>
+          Hola, {{auth.currentUser.nombreCompleto}}
+        </span>
+        <button class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i>
+          Salir
+        </button>
       </ng-container>
       <ng-template #authLinks>
         <a class="btn btn-outline-primary btn-sm" routerLink="/login">Iniciar sesión</a>
-        <a class="btn btn-primary btn-sm" routerLink="/register">Crear cuenta</a>
       </ng-template>
     </div>
   </div>
 </nav>
 
-<div class="container py-3">
+<main class="container py-3 app-main">
   <router-outlet></router-outlet>
-</div>
+</main>
+
+<footer class="app-footer mt-auto py-3">
+  <div class="container d-flex flex-wrap justify-content-between align-items-center small">
+    <div class="text-muted">© {{year}} Weengz Air — Todos los derechos reservados</div>
+    <div class="d-flex align-items-center gap-3">
+      <span class="text-muted">Hecho con <i class="bi bi-heart-fill" style="color:#e25555"></i> y ☕</span>
+    </div>
+  </div>
+  </footer>

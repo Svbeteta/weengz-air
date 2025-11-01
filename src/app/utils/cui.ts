@@ -12,20 +12,20 @@ const municipiosPorDepto: Record<number, number> = {
 
 export function validarCUI(cui: string): { ok: boolean; error?: string } {
   if (!/^\d{13}$/.test(cui)) {
-    return { ok: false, error: "El CUI debe contener exactamente 13 dÃ­gitos numÃ©ricos." };
+    return { ok: false, error: "El CUI debe contener exactamente 13 dígitos numéricos." };
   }
   const depto = parseInt(cui.substring(9, 11), 10);   // posiciones 10-11 (base 1)
   const mun   = parseInt(cui.substring(11, 13), 10);  // posiciones 12-13 (base 1)
 
   if (isNaN(depto) || isNaN(mun)) {
-    return { ok: false, error: "CÃ³digos de departamento/municipio invÃ¡lidos." };
+    return { ok: false, error: "Códigos de departamento/municipio inválidos." };
   }
   if (depto < 1 || depto > 22) {
-    return { ok: false, error: "Departamento no vÃ¡lido (01..22)." };
+    return { ok: false, error: "Departamento no válido (01..22)." };
   }
   const maxMun = municipiosPorDepto[depto];
   if (mun < 1 || mun > maxMun) {
-    return { ok: false, error: `Municipio no vÃ¡lido (01..${maxMun}) para el departamento ${String(depto).padStart(2,"0")}.` };
+    return { ok: false, error: `Municipio no válido (01..${maxMun}) para el departamento ${String(depto).padStart(2,"0")}.` };
   }
   return { ok: true };
 }

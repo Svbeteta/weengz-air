@@ -25,7 +25,7 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-primary mt-2" (click)="confirmarLote()">Confirmar reservas</button>
+  <button class="btn btn-primary mt-2" (click)="confirmarLote()">Reservar</button>
       </div>
     </div>
     <ng-template #noLote>
@@ -36,15 +36,36 @@
   <div class="col-12 col-lg-5">
     <div class="card shadow-sm">
       <div class="card-body">
-        <h5 class="mb-3">Mis Reservas</h5>
-        <div *ngFor="let r of misReservas" class="border rounded p-2 mb-2">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h5 class="mb-0">Mis Reservas</h5>
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-secondary" (click)="prevPage()" [disabled]="pageIndex===0" title="Anterior">
+              ‹
+            </button>
+            <span class="small text-muted">Página {{pageIndex+1}} / {{ totalPages || 1 }}</span>
+            <button class="btn btn-sm btn-outline-secondary" (click)="nextPage()" [disabled]="pageIndex>=totalPages-1 || totalPages===0" title="Siguiente">
+              ›
+            </button>
+          </div>
+        </div>
+        
+  <div *ngFor="let r of pagedReservas" class="border rounded p-2 mb-2">
           <div><strong>Asiento:</strong> {{r.asiento}} | <strong>Estado:</strong> {{r.estado}}</div>
-          <div><small>{{r.pasajero.nombreCompleto}} - CUI: {{r.pasajero.cui}} - Equipaje: {{r.pasajero.tieneEquipaje ? 'SÃ­':'No'}}</small></div>
+          <div><small>{{r.pasajero.nombreCompleto}} - CUI: {{r.pasajero.cui}} - Equipaje: {{r.pasajero.tieneEquipaje ? 'Sí­':'No'}}</small></div>
           <div><small>Método: {{r.detalles.metodoSeleccion}} | Fecha: {{r.detalles.fechaReservacion | date:'short'}}</small></div>
-          <div><small>Precio: Q{{r.detalles.precioTotal}}</small></div>
+          <div>
+            <small *ngIf="discountInfo(r).applied">
+              Precio original: <span class="text-muted">Q{{ discountInfo(r).precioBase | number:'1.2-2' }}</span>
+              &nbsp;•&nbsp;Descuento: <strong class="text-success">-Q{{ discountInfo(r).descuentoAmount | number:'1.2-2' }} ({{ discountInfo(r).descuentoPct }}%)</strong>
+              <span *ngIf="discountInfo(r).recargos">&nbsp;•&nbsp;Recargos: <strong>+Q{{ discountInfo(r).recargos | number:'1.2-2' }}</strong></span>
+            </small>
+            <div><small *ngIf="!discountInfo(r).applied">Precio: Q{{ r.detalles.precioTotal | number:'1.2-2' }}</small></div>
+            <div><small *ngIf="discountInfo(r).applied"><strong>Total: Q{{ discountInfo(r).precioTotal | number:'1.2-2' }}</strong></small></div>
+          </div>
           <div class="mt-2 d-flex gap-2">
+            <!-- Confirmar por ítem removido: usar 'Confirmar todas' para enviar un solo email consolidado -->
             <button class="btn btn-sm btn-outline-primary" (click)="modificar(r)" [disabled]="r.estado!=='ACTIVA'">Modificar</button>
-            <button class="btn btn-sm btn-outline-danger" (click)="cancelar(r)" [disabled]="r.estado!=='ACTIVA'">Cancelar</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="abrirCancelar(r)" [disabled]="r.estado!=='ACTIVA'">Cancelar</button>
           </div>
           <div class="mt-2" *ngIf="r.Modificaciones?.length">
             <small class="text-muted">Modificaciones:</small>
@@ -56,7 +77,100 @@
           </div>
         </div>
         <div *ngIf="!misReservas?.length" class="text-muted">Sin reservas aún.</div>
+        <div *ngIf="misReservas?.length" class="d-flex justify-content-between align-items-center mt-2 small text-muted">
+          <div>Mostrando {{ pageStart }}–{{ pageEnd }} de {{ totalItems }}</div>
+          <div>Por página: {{ pageSize }}</div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-2">
+          <span class="small text-muted">Monto total</span>
+          <span class="fw-semibold text-dark">Q{{ totalConfirmado | number:'1.2-2' }}</span>
+        </div>
+        <div class="mt-3 d-flex justify-content-end">
+          <button class="btn btn-primary" (click)="confirmarTodas()" [disabled]="!hasActivas">Confirmar reservas</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Modal de modificación de asiento -->
+<div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="showModifyModal" style="background: rgba(0,0,0,.6);">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:520px">
+    <div class="modal-content brand-modal">
+      <div class="modal-header border-0">
+        <h5 class="modal-title">Elegir nuevo asiento ({{targetClase}})</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancelModifyModal()"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Grid de 2 columnas: etiqueta (2rem) + asientos; los botones ocupan ambas columnas -->
+        <div class="modify-grid mx-auto">
+          <ng-container *ngFor="let r of (targetClase === 'Negocios' ? businessRows : economyRows)">
+            <div class="modify-label">{{r}}</div>
+            <div class="d-flex gap-2 flex-wrap">
+              <div *ngFor="let a of seatsByRow(r, targetClase!)"
+                   [class]="'seat ' + (a.estado==='Ocupado' ? 'busy' : (selectedSeat===a.numero ? 'selected' : 'free'))"
+                   (click)="pickSeat(a)"
+                   [title]="a.numero">{{a.numero}}</div>
+            </div>
+          </ng-container>
+
+          <div class="mt-3 d-flex flex-column gap-2" style="grid-column: 1 / span 2">
+            <div class="mb-2">
+              <label class="form-label small">Confirma tu CUI para modificar</label>
+              <input class="form-control" [(ngModel)]="modifyCuiInput" (ngModelChange)="onModifyCuiChange($event)" maxlength="17" placeholder="1234 5678 9012 3">
+              <div class="form-text" [class.text-danger]="modifyCuiInput && !isModifyCuiValid">Debe coincidir con el CUI registrado en la reservación.</div>
+              <div class="small mt-1">
+                <button type="button" class="btn btn-link p-0" (click)="showExpectedModifyCui = !showExpectedModifyCui">
+                  {{ showExpectedModifyCui ? 'Ocultar CUI esperado' : 'Mostrar CUI esperado' }}
+                </button>
+                <span class="ms-2 text-muted" *ngIf="showExpectedModifyCui">{{ rEnEdicion?.pasajero?.cui }}</span>
+              </div>
+            </div>
+            <button type="button" class="btn btn-outline-primary" (click)="cancelModifyModal()">Cancelar</button>
+            <button type="button" class="btn btn-primary" [disabled]="!selectedSeat || !isModifyCuiValid" (click)="confirmModifyFromModal()">
+              Confirmar cambio
+            </button>
+          </div>
+        </div>
+        <div class="mt-3 small text-muted">Solo puede elegir asientos libres en la misma clase. Precio se ajusta automáticamente (+10% por modificación).</div>
+      </div>
+      <div class="modal-footer border-0"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación de cancelación -->
+<div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="showCancelModal" style="background: rgba(0,0,0,.6);">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:520px">
+    <div class="modal-content brand-modal">
+      <div class="modal-header border-0">
+        <h5 class="modal-title text-danger">Confirmar cancelación</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancelCancelModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Deseas cancelar la reservación del asiento <strong>{{rParaCancelar?.asiento}}</strong>?</p>
+        <div class="small text-muted">
+          Pasajero: {{rParaCancelar?.pasajero?.nombreCompleto}} • CUI: {{rParaCancelar?.pasajero?.cui}} • {{rParaCancelar?.pasajero?.tieneEquipaje ? 'Con equipaje' : 'Sin equipaje'}}
+        </div>
+        <div class="mt-3">
+          <label class="form-label small">Confirma tu CUI para cancelar</label>
+          <input class="form-control" [(ngModel)]="cancelCuiInput" (ngModelChange)="onCancelCuiChange($event)" maxlength="17" placeholder="1234 5678 9012 3">
+          <div class="form-text" [class.text-danger]="cancelCuiInput && !isCancelCuiValid">Debe coincidir con el CUI registrado en la reservación.</div>
+          <div class="small mt-1">
+            <button type="button" class="btn btn-link p-0" (click)="showExpectedCancelCui = !showExpectedCancelCui">
+              {{ showExpectedCancelCui ? 'Ocultar CUI esperado' : 'Mostrar CUI esperado' }}
+            </button>
+            <span class="ms-2 text-muted" *ngIf="showExpectedCancelCui">{{ rParaCancelar?.pasajero?.cui }}</span>
+          </div>
+        </div>
+        <div class="alert alert-warning mt-3 mb-0">
+          Esta acción liberará el asiento. Te enviaremos un correo con la confirmación de la cancelación.
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-outline-secondary" (click)="cancelCancelModal()">Volver</button>
+        <button type="button" class="btn btn-danger" [disabled]="!isCancelCuiValid" (click)="confirmCancelFromModal()">Cancelar reservación</button>
+      </div>
+    </div>
+  </div>
+  </div>

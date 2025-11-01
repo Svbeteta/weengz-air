@@ -2,6 +2,26 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.4.
 
+## UI theme and buttons
+
+The app uses a dark theme with a unified brand palette. Reusable button styles are available:
+
+- Primary action: `btn btn-primary`
+- Subtle action: `btn btn-outline-primary`
+
+Examples:
+
+```html
+<button class="btn btn-primary">Confirmar</button>
+<button class="btn btn-outline-primary">Cancelar</button>
+```
+
+Notes:
+
+- Forms, cards, and the navbar are themed automatically via CSS variables in `src/styles.scss`.
+- Seat states use `.seat.free | .seat.selected | .seat.busy` for consistent visuals in both the seat page and the modify modal.
+- Prefer `btn-primary` and `btn-outline-primary` over Bootstrap’s other color variants to keep a cohesive look.
+
 ## Development server
 
 To start a local development server, run:

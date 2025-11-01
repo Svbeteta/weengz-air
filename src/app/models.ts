@@ -37,7 +37,7 @@ export interface DetallesReserva {
 
 export interface Reservacion {
   id?: number;
-  estado: "ACTIVA" | "CANCELADA";
+  estado: "ACTIVA" | "CONFIRMADA" | "CANCELADA";
   usuario: string; // email
   asiento: string; // numero de asiento
   pasajero: Pasajero;

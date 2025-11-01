@@ -8,6 +8,7 @@
 
 # Node
 /node_modules
+**/node_modules/
 npm-debug.log
 yarn-error.log
 
@@ -30,6 +31,11 @@ yarn-error.log
 
 # Miscellaneous
 /.angular/cache
+**/dist/
+**/coverage/
+server/.env
+server/.env.*
+server/dist/
 .sass-cache/
 /connect.lock
 /coverage

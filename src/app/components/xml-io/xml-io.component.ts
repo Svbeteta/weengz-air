@@ -118,10 +118,22 @@ ${r.Modificaciones.map(m => `        <Modificacion>
         }
         for (const r of reservaciones) {
           try {
-            const id = parseInt(r.getAttribute("id") ?? "0", 10);
-            if (!rList.find(x => x.id === id)) {
-              // omitir altas para mantener integridad simple con json-server
-            }
+            const asiento = r.querySelector("asiento")?.textContent ?? "";
+            const usuario = r.querySelector("usuario")?.textContent ?? "";
+            const pasajero = {
+              nombreCompleto: r.querySelector("pasajero > nombreCompleto")?.textContent ?? "",
+              cui: r.querySelector("pasajero > cui")?.textContent ?? "",
+              tieneEquipaje: (r.querySelector("pasajero > tieneEquipaje")?.textContent ?? "false") === "true"
+            };
+            const fecha = r.querySelector("detalles > fechaReservacion")?.textContent ?? new Date().toISOString();
+            const metodo = (r.querySelector("detalles > metodoSeleccion")?.textContent ?? "Manual") as any;
+            const precioBase = parseFloat(r.querySelector("detalles > precioBase")?.textContent ?? "0");
+
+            // Crear de forma atómica en el backend (si el asiento existe y está libre)
+            await this.api.crearReservacionAtomica({
+              usuario, asiento, pasajero,
+              detalles: { fechaReservacion: fecha, metodoSeleccion: metodo, precioBase }
+            }).toPromise();
             ok++;
           } catch { fail++; }
         }
